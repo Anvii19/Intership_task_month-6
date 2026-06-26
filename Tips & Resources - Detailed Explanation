@@ -1,0 +1,441 @@
+# Tips & Resources - Detailed Explanation
+
+## 1. Search YouTube: "Django social media platform tutorial"
+
+### Why?
+
+Building a social media application involves many modules:
+
+* Authentication
+* Posts
+* Likes
+* Comments
+* Friend Requests
+* Notifications
+* APIs
+
+Watching a complete project tutorial helps you understand:
+
+* Project flow
+* Folder structure
+* Best coding practices
+* UI design
+
+### Recommended Topics
+
+Search:
+
+```text
+Django Social Media Project Full Tutorial
+Django REST Framework Tutorial
+Django Authentication Tutorial
+Bootstrap Django Social Media UI
+```
+
+---
+
+# 2. Start with Basic Models and Views Before Adding Complex Features
+
+## Recommended Development Order
+
+### Phase 1 (Basic)
+
+Create:
+
+### User Model/Profile
+
+```python
+class Profile(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    bio = models.TextField()
+```
+
+### Post Model
+
+```python
+class Post(models.Model):
+    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    content = models.TextField()
+```
+
+Build:
+
+* Register
+* Login
+* Create Post
+* View Posts
+
+Only after these work, move to:
+
+### Phase 2
+
+* Likes
+* Comments
+
+### Phase 3
+
+* Friends
+* Notifications
+
+### Phase 4
+
+* Chat
+* Real-time features
+
+This approach reduces bugs and confusion.
+
+---
+
+# 3. Use Django's Built-in Authentication System as Foundation
+
+Django already provides:
+
+* User registration support
+* Login system
+* Logout system
+* Password hashing
+* Session management
+
+Import:
+
+```python
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+```
+
+Example Login:
+
+```python
+user = authenticate(
+    username=username,
+    password=password
+)
+
+if user:
+    login(request, user)
+```
+
+Advantages:
+
+✔ Secure
+
+✔ Easy to use
+
+✔ Production ready
+
+✔ Saves development time
+
+---
+
+# 4. Implement Proper Error Handling for File Uploads
+
+Users upload:
+
+* Profile pictures
+* Post images
+
+Possible problems:
+
+* Unsupported file type
+* Large image size
+* Corrupt file
+
+Example Validation:
+
+```python
+def validate_image(image):
+
+    if image.size > 2 * 1024 * 1024:
+        raise ValidationError(
+            "Image size should be less than 2 MB"
+        )
+
+    allowed_extensions = ['jpg','jpeg','png']
+
+    ext = image.name.split('.')[-1]
+
+    if ext.lower() not in allowed_extensions:
+        raise ValidationError(
+            "Only JPG and PNG files allowed"
+        )
+```
+
+Always show friendly error messages.
+
+Example:
+
+```python
+messages.error(
+request,
+"Only JPG and PNG files are allowed."
+)
+```
+
+---
+
+# 5. Use Django REST Framework for API Development
+
+Install DRF:
+
+```bash
+pip install djangorestframework
+```
+
+Add:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'rest_framework'
+]
+```
+
+Benefits:
+
+* Easy API creation
+* JSON responses
+* Authentication support
+* Serialization
+* Browsable API
+
+Example API:
+
+```python
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+
+def get_posts(request):
+
+    posts = Post.objects.all()
+
+    data = []
+
+    for post in posts:
+        data.append({
+            "user": post.author.username,
+            "content": post.content
+        })
+
+    return Response(data)
+```
+
+---
+
+# 6. Optimize Database Queries for Better Performance
+
+Bad Example:
+
+```python
+posts = Post.objects.all()
+
+for post in posts:
+    print(post.author.username)
+```
+
+This creates many database queries.
+
+Better:
+
+```python
+posts = Post.objects.select_related('author')
+```
+
+For many-to-many relations:
+
+```python
+posts = Post.objects.prefetch_related(
+'likes',
+'comments'
+)
+```
+
+Benefits:
+
+* Faster application
+* Reduced database load
+
+---
+
+# 7. Implement Caching for Frequently Accessed Data
+
+Social media apps frequently load:
+
+* Feed
+* User profiles
+* Trending posts
+
+Caching stores frequently used data temporarily.
+
+Install Redis:
+
+```bash
+pip install redis
+```
+
+Configure:
+
+```python
+CACHES = {
+    'default': {
+        'BACKEND':
+        'django.core.cache.backends.redis.RedisCache',
+
+        'LOCATION':
+        'redis://127.0.0.1:6379'
+    }
+}
+```
+
+Example:
+
+```python
+from django.core.cache import cache
+
+posts = cache.get('feed')
+
+if not posts:
+    posts = Post.objects.all()
+    cache.set('feed', posts, 300)
+```
+
+Cache duration:
+
+```text
+300 seconds = 5 minutes
+```
+
+Benefits:
+
+✔ Faster loading
+
+✔ Reduced DB queries
+
+---
+
+# 8. Use Django Debug Toolbar During Development
+
+Install:
+
+```bash
+pip install django-debug-toolbar
+```
+
+Purpose:
+
+Shows:
+
+* SQL queries
+* Request time
+* Cache usage
+* Template rendering time
+
+Add:
+
+```python
+INSTALLED_APPS = [
+'debug_toolbar'
+]
+```
+
+Middleware:
+
+```python
+MIDDLEWARE = [
+'debug_toolbar.middleware.DebugToolbarMiddleware'
+]
+```
+
+Useful for optimization.
+
+---
+
+# 9. Write Tests for Critical Functionality
+
+You should test:
+
+## Authentication
+
+```python
+def test_login(self):
+    response = self.client.post(
+        '/login/',
+        {
+            'username':'muskan',
+            'password':'1234'
+        }
+    )
+
+    self.assertEqual(response.status_code,200)
+```
+
+## Post Creation
+
+```python
+def test_create_post(self):
+
+    post = Post.objects.create(
+        content='Hello World'
+    )
+
+    self.assertEqual(
+        post.content,
+        'Hello World'
+    )
+```
+
+Test:
+
+* Login
+* Register
+* Posts
+* Likes
+* Comments
+* Friend Requests
+
+Run tests:
+
+```bash
+python manage.py test
+```
+
+Benefits:
+
+✔ Fewer bugs
+
+✔ Stable application
+
+---
+
+# 10. Deploy Early to Identify Production Issues
+
+Do not wait until the project is finished.
+
+Deploy after:
+
+* Authentication completed
+* Posts working
+
+Recommended Platforms:
+
+## Render
+
+Easy for beginners.
+
+## Railway
+
+Fast deployment.
+
+## PythonAnywhere
+
+Good for Django projects.
+
+Production issues discovered early:
+
+* Static files not loading
+* Media uploads failing
+* Database connection errors
+* Environment variable problems
+
+Deploy frequently during development.
