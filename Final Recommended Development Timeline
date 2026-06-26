@@ -1,0 +1,47 @@
+Tips for Successful Completion:
+
+Start with authentication first.
+Build post creation and feed functionality.
+Add likes and comments.
+Implement friend requests.
+Create REST APIs using DRF.
+Test every module.
+Deploy early on Render or Railway.
+Keep documentation updated.
+Push code regularly to GitHub.
+Use Git branches for new features.
+
+##Final Recommended Development Timeline
+
+## Week 1
+
+* Setup project
+* Authentication
+* User profiles
+
+## Week 2
+
+* Posts
+* Likes
+* Comments
+
+## Week 3
+
+* Friends system
+* Notifications
+
+## Week 4
+
+* REST APIs
+
+## Week 5
+
+* Testing
+* Optimization
+* Caching
+
+## Week 6
+
+* Deployment
+* Documentation
+* Final submission
