@@ -1,0 +1,13 @@
+| Requirement      | Technology           |
+| ---------------- | -------------------- |
+| Backend          | FastAPI              |
+| Database         | PostgreSQL           |
+| Authentication   | JWT                  |
+| ORM              | SQLAlchemy           |
+| API Docs         | Swagger              |
+| Testing          | Pytest               |
+| Containerization | Docker               |
+| CI/CD            | GitHub Actions       |
+| Monitoring       | Prometheus + Grafana |
+| Logging          | Python Logging       |
+| Deployment       | Render/Railway/AWS   |
