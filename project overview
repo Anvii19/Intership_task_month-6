@@ -1,0 +1,395 @@
+ 1. Project Overview
+
+ConnectHub is a social networking web application where users can:
+
+* Register and login
+* Create posts with images
+* Like and comment on posts
+* Follow/unfollow users
+* Send friend requests
+* Receive notifications
+* View personalized feeds
+* Edit profiles
+* Chat with friends (Advanced)
+
+2. Technology Stack
+
+| Technology            | Purpose           |
+| --------------------- | ----------------- |
+| Django                | Backend Framework |
+| Django REST Framework | API Development   |
+| HTML/CSS/Bootstrap    | Frontend          |
+| JavaScript            | Dynamic UI        |
+| SQLite/PostgreSQL     | Database          |
+| Pillow                | Image Upload      |
+| Redis                 | Caching           |
+| Channels              | Real-time Chat    |
+| Git/GitHub            | Version Control   |
+| Render/Railway        | Deployment        |
+
+3. Project Structure
+
+```text
+social_media_platform/
+
+├── manage.py
+├── requirements.txt
+├── README.md
+│
+├── social_platform/
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+│
+├── users/
+├── posts/
+├── comments/
+├── friendships/
+├── notifications/
+├── chat/
+├── templates/
+├── static/
+├── media/
+└── tests/
+
+ 4. Install Dependencies
+
+```bash
+pip install django
+pip install djangorestframework
+pip install pillow
+pip install django-crispy-forms
+pip install channels
+pip install redis
+```
+
+Save dependencies:
+
+```bash
+pip freeze > requirements.txt
+```
+
+5. Create Project
+
+```bash
+django-admin startproject social_platform
+
+cd social_platform
+
+python manage.py startapp users
+python manage.py startapp posts
+python manage.py startapp comments
+python manage.py startapp friendships
+python manage.py startapp notifications
+python manage.py startapp chat
+```
+ 6. User Authentication Module
+
+## Features
+
+* Register
+* Login
+* Logout
+* Edit Profile
+* Change Password
+
+### User Profile Model
+
+```python
+from django.contrib.auth.models import User
+from django.db import models
+
+class Profile(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+    profile_picture = models.ImageField(upload_to='profiles/')
+    location = models.CharField(max_length=100,blank=True)
+
+    def __str__(self):
+        return self.user.username
+```
+
+7. Post Module
+
+Users can:
+
+* Create Post
+* Edit Post
+* Delete Post
+* Upload Images
+
+### Post Model
+
+```python
+from django.db import models
+from django.contrib.auth.models import User
+
+class Post(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    caption = models.TextField()
+    image = models.ImageField(upload_to='posts/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+```
+
+8. Like System
+
+```python
+class Like(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user','post')
+```
+
+9. Comment System
+
+```python
+class Comment(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+
+Features:
+
+* Add Comment
+* Delete Comment
+* View Comments
+
+ 10. Friend System
+
+```python
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(
+        User,
+        related_name='sender',
+        on_delete=models.CASCADE
+    )
+
+    receiver = models.ForeignKey(
+        User,
+        related_name='receiver',
+        on_delete=models.CASCADE
+    )
+
+    accepted = models.BooleanField(default=False)
+```
+
+Features:
+
+* Send Request
+* Accept Request
+* Reject Request
+* Remove Friend
+
+ 11. Follow System
+
+```python
+class Follow(models.Model):
+    follower = models.ForeignKey(
+        User,
+        related_name='following',
+        on_delete=models.CASCADE
+    )
+
+    following = models.ForeignKey(
+        User,
+        related_name='followers',
+        on_delete=models.CASCADE
+    )
+```
+
+ 12. Notification System
+
+Users receive notifications when:
+
+* Someone likes their post
+* Someone comments
+* Friend request received
+* Follow request received
+
+```python
+class Notification(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    message=models.TextField()
+    is_read=models.BooleanField(default=False)
+    created_at=models.DateTimeField(auto_now_add=True)
+```
+
+ 13. REST API Endpoints
+
+## Authentication
+
+```text
+POST /api/register/
+POST /api/login/
+POST /api/logout/
+```
+
+## Posts
+
+```text
+GET /api/posts/
+POST /api/posts/create/
+PUT /api/posts/update/<id>/
+DELETE /api/posts/delete/<id>/
+```
+
+## Likes
+
+```text
+POST /api/like/<post_id>/
+```
+
+## Comments
+
+```text
+POST /api/comment/<post_id>/
+```
+
+14. Responsive Frontend Pages
+
+Create:
+
+```text
+Home Page
+Login Page
+Register Page
+Profile Page
+Feed Page
+Friend Page
+Notification Page
+Chat Page
+```
+
+Use Bootstrap 5.
+
+ 15. Security Considerations
+
+## Important Security Features
+
+### CSRF Protection
+
+Django provides built-in CSRF protection.
+
+```html
+{% csrf_token %}
+```
+
+### Password Hashing
+
+Passwords are automatically hashed.
+
+### Authentication Decorator
+
+```python
+@login_required
+```
+
+### File Validation
+
+Validate image size and extension.
+
+### User Permissions
+
+Users can edit only their own posts.
+
+ 16. Performance Optimization
+
+## Caching
+
+Use Redis:
+
+```python
+CACHES = {
+    'default': {
+        'BACKEND':
+        'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+    }
+}
+```
+
+## Database Optimization
+
+Use:
+
+```python
+select_related()
+prefetch_related()
+```
+
+ 17. Testing
+
+Create tests for:
+
+* Registration
+* Login
+* Post Creation
+* Comments
+* Likes
+
+Example:
+
+```python
+from django.test import TestCase
+
+class PostTest(TestCase):
+
+    def test_create_post(self):
+        self.assertEqual(Post.objects.count(),1)
+```
+
+Run tests:
+
+```bash
+python manage.py test
+```
+ 18. Deployment
+
+Deploy on:
+
+* Render
+* Railway
+* PythonAnywhere
+
+Recommended:
+
+**Render**
+
+ 19. Deliverables Checklist
+
+✔ User Authentication
+
+✔ Post System
+
+✔ Like System
+
+✔ Comment System
+
+✔ Friend System
+
+✔ Responsive Design
+
+✔ REST APIs
+
+✔ Notifications
+
+✔ Deployment
+
+✔ Documentation
+
+20. Advanced Features (Option 3)
+
+* Real-time Chat using Django Channels
+* Groups
+* Events
+* Video Upload
+* Story Feature
+* Search Users
