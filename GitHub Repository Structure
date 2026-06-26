@@ -1,0 +1,298 @@
+## Recommended GitHub Repository Structure
+
+```text
+social_media_platform/
+│
+├── README.md
+├── requirements.txt
+├── manage.py
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+│
+├── social_platform/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+│
+├── users/
+│   ├── migrations/
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── forms.py
+│   ├── admin.py
+│   └── tests.py
+│
+├── posts/
+│   ├── migrations/
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── forms.py
+│   └── admin.py
+│
+├── friends/
+│   ├── migrations/
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   └── admin.py
+│
+├── notifications/
+│   ├── migrations/
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   └── admin.py
+│
+├── api/
+│   ├── serializers.py
+│   ├── views.py
+│   ├── urls.py
+│   └── permissions.py
+│
+├── templates/
+│   ├── base.html
+│   ├── home.html
+│   ├── login.html
+│   ├── register.html
+│   ├── profile.html
+│   └── feed.html
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+├── media/
+│   └── uploads/
+│
+├── tests/
+│   ├── test_users.py
+│   ├── test_posts.py
+│   ├── test_friends.py
+│   └── test_api.py
+│
+└── docs/
+    ├── installation.md
+    ├── api_documentation.md
+    ├── architecture.md
+    └── deployment.md
+```
+
+# Required Features
+
+## 1. User Authentication
+
+* User Registration
+* User Login
+* Logout
+* Password Change
+* Profile Update
+
+Use Django built-in authentication:
+
+```python
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+```
+
+---
+
+## 2. Post Management
+
+Users should be able to:
+
+* Create Posts
+* Edit Posts
+* Delete Posts
+* Upload Images
+* View News Feed
+
+Example Post Model:
+
+```python
+class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    image = models.ImageField(upload_to='posts/', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+
+---
+
+## 3. Friend System
+
+Features:
+
+* Send Friend Request
+* Accept Request
+* Reject Request
+* Unfriend User
+
+Example:
+
+```python
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(User, related_name='sender',
+                               on_delete=models.CASCADE)
+
+    receiver = models.ForeignKey(User, related_name='receiver',
+                                 on_delete=models.CASCADE)
+
+    accepted = models.BooleanField(default=False)
+```
+
+---
+
+## 4. Notification System
+
+Generate notifications when:
+
+* User likes a post
+* User comments on post
+* User receives friend request
+
+Example:
+
+```python
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+```
+
+---
+
+## 5. REST API Implementation
+
+Use Django REST Framework.
+
+Install:
+
+```bash
+pip install djangorestframework
+```
+
+API Endpoints:
+
+```text
+POST /api/register/
+POST /api/login/
+
+GET  /api/posts/
+POST /api/posts/create/
+PUT  /api/posts/update/<id>/
+DELETE /api/posts/delete/<id>/
+
+POST /api/friend-request/
+GET /api/notifications/
+```
+
+---
+
+## 6. HTML Templates
+
+Create these pages:
+
+```text
+Home Page
+Login Page
+Registration Page
+Profile Page
+News Feed
+Friends List
+Notifications Page
+```
+
+Use Bootstrap for responsive design.
+
+---
+
+## 7. Static Assets
+
+Store CSS, JavaScript, and Images inside:
+
+```text
+static/
+    css/
+    js/
+    images/
+```
+
+---
+
+## 8. Test Suite
+
+Write tests for:
+
+* Registration
+* Login
+* Post Creation
+* Friend Request
+* API Response
+
+Run:
+
+```bash
+python manage.py test
+```
+
+---
+
+## 9. Documentation
+
+README.md should include:
+
+* Project Overview
+* Features
+* Installation Steps
+* Usage Guide
+* API Endpoints
+* Screenshots
+* Deployment Link
+
+---
+
+## 10. Docker Setup
+
+Create Dockerfile:
+
+```dockerfile
+FROM python:3.11
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+CMD ["python","manage.py","runserver","0.0.0.0:8000"]
+```
+
+docker-compose.yml:
+
+```yaml
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+```
+
+---
+
+## 11. Environment Variables
+
+Create `.env.example`
+
+```text
+SECRET_KEY=your_secret_key
+DEBUG=True
+DATABASE_URL=sqlite:///db.sqlite3
+ALLOWED_HOSTS=localhost,127.0.0.1
