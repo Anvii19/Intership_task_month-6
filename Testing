@@ -1,0 +1,19 @@
+Testing (>85% Coverage)
+
+Install:
+
+pip install pytest pytest-cov
+
+Example:
+
+def test_home():
+    response = client.get("/")
+    assert response.status_code == 200
+
+Generate report:
+
+pytest --cov=src
+
+Target:
+
+Coverage > 85%
