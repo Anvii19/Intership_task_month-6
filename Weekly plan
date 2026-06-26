@@ -1,0 +1,51 @@
+Deployment-
+
+You can deploy on:
+
+Render
+Railway
+AWS EC2
+Azure
+
+For internship submission, Render is easiest.
+
+Documentation-
+
+Create:
+
+README.md
+
+Include:
+
+Project Overview
+Features:
+
+Architecture Diagram
+Installation
+API Endpoints
+Docker Setup
+Testing
+Deployment Link
+
+Weekly Plan-
+Week 1
+Setup project
+Design architecture
+Create database
+Week 2
+Build APIs
+Authentication
+CRUD operations
+Week 3
+Add testing
+Improve code quality
+Week 4
+Dockerize application
+Configure CI/CD
+Week 5
+Add logging and monitoring
+Security improvements
+Week 6
+Resume update
+GitHub optimization
+Interview preparation
