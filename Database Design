@@ -1,0 +1,36 @@
+id
+name 
+email 
+password 
+role 
+created_at
+
+id
+name
+description
+price
+stock
+category
+created_at
+
+id
+user_id
+total_amount
+status
+created_at
+
+Main FastAPI Application
+from fastapi import FastAPI
+
+app = FastAPI(
+    title="Enterprise E-Commerce API",
+    version="1.0.0"
+)
+
+@app.get("/")
+def home():
+    return {"message": "Enterprise API Running"}
+
+
+uvicorn src.main:app --reload
+
