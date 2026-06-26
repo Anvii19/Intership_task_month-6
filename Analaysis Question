@@ -1,0 +1,23 @@
+# Analysis Questions Answers
+
+Q1. How does Django ORM simplify database operations?
+
+Django ORM allows developers to interact with databases using Python code instead of SQL queries. It automatically generates SQL statements, reduces coding effort, improves readability, and provides database independence.
+
+ Q2. What security considerations are crucial?
+
+Authentication, authorization, CSRF protection, password hashing, input validation, file upload validation, and HTTPS.
+
+ Q3. How can the platform scale?
+
+Using caching (Redis), database optimization, load balancing, CDN, asynchronous tasks, and cloud deployment.
+
+Q4. What features improve user engagement?
+
+Likes, comments, notifications, messaging, personalized feed, and friend recommendations.
+
+ Q5. How can content moderation be implemented?
+
+User reporting, admin moderation panel, profanity filtering, AI-based spam detection, and content approval workflows.
+
+This solution covers all the deliverables, analysis questions, and tips shown in your internship task screenshots.
