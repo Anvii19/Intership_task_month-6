@@ -1,0 +1,25 @@
+Features:
+
+User Module-
+*User Registration
+*Login/Logout
+*JWT Authentication
+*Profile Management
+
+Product Module-
+*Add Product
+*Update Product
+*Delete Product
+*Search Products
+*Categories
+
+Order Module-
+*Place Order
+*View Orders
+*Cancel Order
+
+Admin Module-
+*Dashboard
+*Manage Users
+*Manage Products
+*Manage Orders
