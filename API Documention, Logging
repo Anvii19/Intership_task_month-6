@@ -1,0 +1,57 @@
+API Documentation
+
+FastAPI automatically provides:
+
+http://localhost:8000/docs
+
+Swagger UI requirement is completed automatically.
+
+Logging
+import logging
+
+logging.basicConfig(
+    filename='app.log',
+    level=logging.INFO
+)
+
+logging.info("Application Started")
+Monitoring
+
+Use:
+
+Prometheus
+docker run -p 9090:9090 prom/prometheus
+Grafana
+docker run -d -p 3000:3000 grafana/grafana
+
+Monitor:
+
+CPU usage
+Memory usage
+API response time
+Request count
+
+CI/CD Pipeline:
+.github/workflows/ci.yml
+
+name: CI Pipeline
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - run: pip install -r requirements.txt
+
+    - run: pytest
+
