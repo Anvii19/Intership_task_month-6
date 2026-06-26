@@ -1,0 +1,44 @@
+enterprise_project/
+
+│
+├── src/
+│   ├── api/
+│   │     ├── auth.py
+│   │     ├── users.py
+│   │     ├── products.py
+│   │     └── orders.py
+│   │
+│   ├── core/
+│   │     ├── security.py
+│   │     ├── database.py
+│   │     └── config.py
+│   │
+│   ├── models/
+│   │     ├── user.py
+│   │     ├── product.py
+│   │     └── order.py
+│   │
+│   ├── services/
+│   │     ├── auth_service.py
+│   │     ├── product_service.py
+│   │     └── order_service.py
+│   │
+│   ├── middleware/
+│   │     └── logger.py
+│   │
+│   ├── utils/
+│   │     └── helper.py
+│   │
+│   └── main.py
+│
+├── tests/
+│   ├── unit/
+│   └── integration/
+│
+├── docs/
+│
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+├── README.md
+└── .github/workflows/ci.yml
